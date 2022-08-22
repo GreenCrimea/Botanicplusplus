@@ -25,8 +25,10 @@ class Hashing_func {
             this->difficulty = difficulty;
         }
 
+
         //destructor
         ~Hashing_func()=default;
+
 
         //hashing_func
         std::string hash_func(std::string raw_input, double nonce){
@@ -43,21 +45,28 @@ class Hashing_func {
             digest.resize(hash.DigestSize());
             hash.Final((byte*)&digest[0]);
 
-            std::cout << "Message: " << msg << "\n";
             StringSource(digest, true, new Redirector(encoder));
-            std::cout << output_str << std::endl;
 
             return output_str;
         }
 
-        //check hash
-        int check_hash(std::string hashed_input){
-            std::string hashed = hashed_input;
-            std::string hash_check = hashed.substr(0,3);
-            std::string zero_str {"000"};
 
-            std::cout << "zero_str: " << zero_str << "\n";
-            std::cout << "hash_check: " << hash_check << "\n";
+        //generate zero string
+        std::string gen_zero_str(){
+            std::string zero_str {""};
+
+            for(size_t i = 0; i < difficulty; ++i){
+                zero_str.append("0");
+            }
+
+            return zero_str;
+        }
+
+
+        //check hash
+        int check_hash(std::string hashed_input, std::string zero_str){
+            std::string hashed = hashed_input;
+            std::string hash_check = hashed.substr(0, difficulty);
 
             if(hash_check == zero_str){
                 return 1;
@@ -66,6 +75,7 @@ class Hashing_func {
             }
         }
 
+
         //mining_loop
         std::string mine_hash(std::string raw_input){
             int i = 0;
@@ -73,21 +83,30 @@ class Hashing_func {
             int nonce = 0;
             std::string golden_hash {};
 
+            std::cout << "mining\n";
+
+            std::string zero_str = gen_zero_str();
+
             while(i == 0){
                 std::string hashed = hash_func(msg, nonce);
-                i = check_hash(hashed);
+                i = check_hash(hashed, zero_str);
                 golden_hash = hashed;
                 ++nonce;
-                std::cout << "nonce: " << nonce << "\n";
-                //sleep(3);
-                
+                golden_nonce = nonce;
             }
-
             return golden_hash;
+        }
+
+
+        //getter
+        int get_golden_nonce(){
+            int num = golden_nonce;
+            return num;
         }
 
     private:
 
-        int difficulty = 5;
+        int difficulty = 0;
+        int golden_nonce = 0;
 
 };

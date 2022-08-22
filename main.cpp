@@ -17,14 +17,15 @@ int main() {
     //Contracts contract_2 = test_2();
 
     //test_3(contract_1, contract_2);
-    double difficulty = 0;
+    double difficulty = 6;
     Hashing_func hasher(difficulty);
     
     std::string golden_hash {};
-    std::string DATA {"testdata2"};
+    std::string DATA {"testdata23"};
     
     golden_hash = hasher.mine_hash(DATA);
     std::cout << "golden hash: " << golden_hash << "\n";
+    std::cout << "golden nonce: " << hasher.get_golden_nonce() << "\n";
 
     return 0;
 } 
