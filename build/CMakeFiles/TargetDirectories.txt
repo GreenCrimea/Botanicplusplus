@@ -1,0 +1,5 @@
+/home/gc/VS-Projects/Botanic++/build/CMakeFiles/botanic.dir
+/home/gc/VS-Projects/Botanic++/build/CMakeFiles/package.dir
+/home/gc/VS-Projects/Botanic++/build/CMakeFiles/package_source.dir
+/home/gc/VS-Projects/Botanic++/build/CMakeFiles/edit_cache.dir
+/home/gc/VS-Projects/Botanic++/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,1 @@
+/usr/bin/g++ -g -rdynamic CMakeFiles/cpp_library_test.dir/main.cpp.o -o cpp_library_test   -L/home/gc/vcpkg/installed/x64-linux/lib  -Wl,-rpath,/home/gc/vcpkg/installed/x64-linux/lib -lcryptopp 

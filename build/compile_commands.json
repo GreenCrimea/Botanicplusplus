@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/home/gc/VS-Projects/Botanic++/build",
+  "command": "/usr/bin/g++  -I/home/gc/vcpkg/installed/x64-linux/include/cryptopp -g -o CMakeFiles/botanic.dir/main.cpp.o -c /home/gc/VS-Projects/Botanic++/main.cpp",
+  "file": "/home/gc/VS-Projects/Botanic++/main.cpp"
+}
+]
