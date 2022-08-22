@@ -3,7 +3,6 @@
 #include "hash.h"
 
 
-
 Contracts test_1();
 
 Contracts test_2();
