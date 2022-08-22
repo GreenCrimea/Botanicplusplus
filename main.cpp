@@ -19,7 +19,12 @@ int main() {
     //test_3(contract_1, contract_2);
     double difficulty = 0;
     Hashing_func hasher(difficulty);
-    hasher.hash_block();
+    
+    std::string golden_hash {};
+    std::string DATA {"testdata2"};
+    
+    golden_hash = hasher.mine_hash(DATA);
+    std::cout << "golden hash: " << golden_hash << "\n";
 
     return 0;
 } 
