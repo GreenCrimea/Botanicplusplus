@@ -13,6 +13,9 @@ LINK_DIRECTORIES(
 
 add_executable(botanic main.cpp)
 
+find_package(Crow)
+
+TARGET_LINK_LIBRARIES(your_project PUBLIC Crow::Crow)
 
 TARGET_LINK_LIBRARIES(botanic
     cryptopp
