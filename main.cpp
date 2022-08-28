@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include "hash.h"
+#include "webtest.h"
 
 
 Contracts test_1();
