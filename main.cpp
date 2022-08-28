@@ -1,8 +1,8 @@
 #include <iostream>
 #include <string>
 #include "hash.h"
-#include "webtest.h"
-
+#define CROW_MAIN
+#include "crow.h"
 
 Contracts test_1();
 
@@ -12,7 +12,7 @@ void test_3(Contracts a, Contracts b);
 
 
 int main() {
-
+/*
     //Contracts contract_1 = test_1();
     //Contracts contract_2 = test_2();
 
@@ -26,6 +26,15 @@ int main() {
     golden_hash = hasher.mine_hash(DATA);
     std::cout << "golden hash: " << golden_hash << "\n";
     std::cout << "golden nonce: " << hasher.get_golden_nonce() << "\n";
+*/
+    crow::SimpleApp app;
+
+
+    CROW_ROUTE(app, "/")([](){
+        return "hello world";
+    });
+
+    app.port(18080).multithreaded().run();
 
     return 0;
 } 
