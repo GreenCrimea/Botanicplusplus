@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "hash.h"
+#include "cryptography.h"
 #define CROW_MAIN
 #include "crow.h"
 
