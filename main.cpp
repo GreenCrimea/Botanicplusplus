@@ -29,7 +29,6 @@ int main() {
 */
     crow::SimpleApp app;
 
-
     CROW_ROUTE(app, "/")([](){
         return "hello world";
     });
@@ -39,6 +38,9 @@ int main() {
     return 0;
 } 
 
+
+
+/*
 Contracts test_1(){
 
     std::string transaction_ID{"87f897f987e7"};
@@ -85,3 +87,4 @@ void test_3(Contracts a, Contracts b){
 
     block_1.print_block();
 }
+*/

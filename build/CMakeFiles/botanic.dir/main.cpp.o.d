@@ -147,7 +147,7 @@ CMakeFiles/botanic.dir/main.cpp.o: \
  /usr/include/c++/11/bits/istream.tcc \
  /home/gc/VS-Projects/Botanic++/hash.h \
  /home/gc/VS-Projects/Botanic++/block.h \
- /home/gc/VS-Projects/Botanic++/Contracts.h \
+ /home/gc/VS-Projects/Botanic++/contracts.h \
  /home/gc/vcpkg/installed/x64-linux/include/cryptopp/cryptlib.h \
  /home/gc/vcpkg/installed/x64-linux/include/cryptopp/config.h \
  /home/gc/vcpkg/installed/x64-linux/include/cryptopp/config_align.h \

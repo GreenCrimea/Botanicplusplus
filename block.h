@@ -10,7 +10,7 @@ Inherits Index, Timestamp, Proof, Previous_proof, Contracts_Array
 */
 #include <string_view>
 #include <string>
-#include "Contracts.h"
+#include "contracts.h"
 const int BLOCKSIZE {2};
 
 class Index {
