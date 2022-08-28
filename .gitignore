@@ -1,5 +1,5 @@
-build/
+/build
 
-keys/
+/keys
 
-.vscode/
+/.vscode
