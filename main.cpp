@@ -8,7 +8,9 @@
 int main() {
 
     std::string passphrase {"password"};
-    generate_keypair(passphrase);
+    std::string wallet = generate_keypair(passphrase);
+
+    verify_wallet_owner(wallet, passphrase);
 
     crow::SimpleApp app;
 
