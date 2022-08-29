@@ -110,7 +110,7 @@ std::string generate_wallet (std::string signature){
 }
 
 
-void verify_wallet_owner(std::string wallet, std::string passphrase){
+CryptoPP::RSA::PrivateKey load_keys(std::string wallet){
     using namespace CryptoPP;
 
     std::string filename = "keys/" + wallet + ".key";
@@ -118,14 +118,22 @@ void verify_wallet_owner(std::string wallet, std::string passphrase){
 
     LoadPrivateKey(filename, privateKey);
 
+    return privateKey;
+}
+
+
+bool verify_wallet_owner(std::string wallet, std::string passphrase){
+    using namespace CryptoPP;
+
+    RSA::PrivateKey privateKey = load_keys(wallet);
+
     std::string signature = sign_message(privateKey, passphrase);
 
     std::string check_wallet = generate_wallet(signature);
 
-    std::cout << "wal: " << check_wallet << std::endl;
-    std::cout << "og wal: " << wallet << std::endl;
-
     bool result = verify_wallet(check_wallet, wallet);
+
+    return result;
 }
 
 
