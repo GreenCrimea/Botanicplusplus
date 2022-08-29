@@ -7,6 +7,8 @@
 
 int main() {
 
+    generate_rsa_keypair();
+
     crow::SimpleApp app;
 
     CROW_ROUTE(app, "/")([](){

@@ -2,51 +2,51 @@
 #include <string>
 #include <string_view>
 #include "hash.h"
-
-class Cryptography {
-
-    public:
-        //constructor
-        Cryptography()=default;
+#include <cryptopp/rsa.h>
+#include <cryptopp/osrng.h>
+#include <cryptopp/base64.h>
+#include <cryptopp/files.h>
 
 
-        //destructor
-        ~Cryptography()=default;
+void Save(const std::string& filename, const CryptoPP::BufferedTransformation& bt)
+{
+    CryptoPP::FileSink file(filename.c_str());
 
-
-        //CRYPTO FUNCS
-        //generate wallet
-        auto generate_wallet(std::string passphrase){
-            generate_private_key();
-            generate_public_key();
-
-
-        }
-
-
-        //generate private key
-        void generate_private_key(){
-            AutoSeededRandomPool prng;
-
-            RSA::PrivateKey rsa_private;
-            rsa_private.GenerateRandomWithKeySize(prng, 3072);
-            current_working_prikey = rsa_private;           
-        }
-
-
-        //generate public key
-        void generate_public_key(){
-            RSA::PublicKey rsa_public(current_working_prikey);
-            current_working_pubkey = rsa_public;
-        }
-
-
-        //get wallet address
-
-
-
-    private:
-
-        auto current_working_pubkey;
-        auto current_working_prikey;
+    bt.CopyTo(file);
+    file.MessageEnd();
 }
+
+
+void SavePrivateKey(const std::string& filename, const CryptoPP::RSA::PrivateKey& key)
+{
+    CryptoPP::ByteQueue queue;
+    key.Save(queue);
+
+    Save(filename, queue);
+}
+
+
+
+void save_keys (CryptoPP::RSA::PrivateKey rsaPrivate){
+    SavePrivateKey("keys/rsa-private.key", rsaPrivate);
+}
+
+
+auto generate_rsa_keypair (){
+    CryptoPP::AutoSeededRandomPool prng;
+
+    CryptoPP::RSA::PrivateKey rsaPrivate;
+    rsaPrivate.GenerateRandomWithKeySize(prng, 3072);
+
+    CryptoPP::RSA::PublicKey rsaPublic(rsaPrivate);
+
+    save_keys(rsaPrivate);
+    
+    return rsaPrivate, rsaPublic;
+}
+
+
+
+//std::string get_wallet_address (CryptoPP::RSA::PrivateKey rsaPrivate){
+//    
+//}
