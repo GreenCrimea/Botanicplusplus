@@ -11,6 +11,8 @@ int main() {
     Blockchain main_chain;
     Block block = main_chain.create_genesis_block(wallet);
     block.print_block();
+    Block block2 = main_chain.create_next_block(wallet);
+    block2.print_block();
 
 
     crow::SimpleApp app;

@@ -23,6 +23,15 @@ class Blockchain {
             }
         }
 
+        //create next block
+        Block create_next_block(std::string reciever_wallet){
+        
+            Hashing_func hasher;
+            std::string previous_proof = hasher.hash_func(previous_block_string, previous_nonce);
+            Block block = create_block(reciever_wallet, previous_proof);
+            return block;
+        }
+
         //create mining reward contract
         Contracts create_mining_reward(std::string reciever_wallet){
             
@@ -58,9 +67,11 @@ class Blockchain {
             block.initialise_array(contract_index, mining_reward);
             ++contract_index;
 
-            previous_hash = hasher.get_golden_hash();
+            previous_nonce = proof;
 
             previous_block_string = block.add_block();
+
+            ++chain_index;
 
             return block;
         }
@@ -69,7 +80,7 @@ class Blockchain {
 
         double chain_index {0};
         double difficulty {3};
-        std::string previous_hash {};
+        double previous_nonce {};
         std::string previous_block_string {};
 
 };
