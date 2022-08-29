@@ -28,7 +28,7 @@ void Load(const std::string& filename, CryptoPP::BufferedTransformation& bt)
 }
 
 
-void SavePrivateKey(const std::string& filename, const auto& key)
+void SavePrivateKey(const std::string& filename, const CryptoPP::RSA::PrivateKey& key)
 {
     CryptoPP::ByteQueue queue;
     key.Save(queue);
@@ -37,7 +37,7 @@ void SavePrivateKey(const std::string& filename, const auto& key)
 }
 
 
-void LoadPrivateKey(const std::string& filename, auto& key)
+void LoadPrivateKey(const std::string& filename, CryptoPP::RSA::PrivateKey& key)
 {
     CryptoPP::ByteQueue queue;
     Load(filename, queue);
@@ -46,14 +46,14 @@ void LoadPrivateKey(const std::string& filename, auto& key)
 }
 
 
-void save_keys (auto rsaPrivate, std::string wallet){
+void save_keys (CryptoPP::RSA::PrivateKey rsaPrivate, std::string wallet){
     std::string dir_str = "keys/" + wallet + ".key";
     SavePrivateKey(dir_str, rsaPrivate);
 }
 
 
 
-std::string sign_message(auto privateKey, std::string passphrase){
+std::string sign_message(CryptoPP::RSA::PrivateKey privateKey, std::string passphrase){
     using namespace CryptoPP;
 
     AutoSeededRandomPool rng;
@@ -120,11 +120,11 @@ std::string generate_wallet (std::string signature){
 }
 
 
-void verify_wallet_owner(std::string wallet, std::string passphrase, auto key){
+void verify_wallet_owner(std::string wallet, std::string passphrase){
     using namespace CryptoPP;
 
     std::string filename = "keys/" + wallet + ".key";
-    ECDSA<ECP, SHA256>::PrivateKey privateKey;
+    RSA::PrivateKey privateKey;
 
     LoadPrivateKey(filename, privateKey);
 
@@ -155,8 +155,6 @@ std::string generate_keypair(std::string passphrase){
     std::string wallet = generate_wallet(signature);
 
     save_keys(privateKey, wallet);
-
-    verify_wallet_owner(wallet, passphrase, privateKey);
 
     return wallet;
 }
