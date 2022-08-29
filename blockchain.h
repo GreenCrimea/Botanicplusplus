@@ -60,6 +60,8 @@ class Blockchain {
 
             previous_hash = hasher.get_golden_hash();
 
+            previous_block_string = block.add_block();
+
             return block;
         }
 
@@ -68,5 +70,6 @@ class Blockchain {
         double chain_index {0};
         double difficulty {3};
         std::string previous_hash {};
+        std::string previous_block_string {};
 
 };

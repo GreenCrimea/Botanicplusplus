@@ -82,15 +82,12 @@ class Hashing_func {
             double nonce = 0;
             double golden_nonce {0};
 
-            std::cout << "mining\n";
+            std::cout << "mining\n...\n\n";
 
             std::string zero_str = gen_zero_str();
 
-            std::cout << zero_str << "\n";
-
             while(i == 0){
                 std::string hashed = hash_func(msg, nonce);
-                std::cout << hashed << "\n";
                 i = check_hash(hashed, zero_str);
                 golden_hash = hashed;
                 ++nonce;

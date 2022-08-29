@@ -11,7 +11,7 @@ Inherits Index, Timestamp, Proof, Previous_proof, Contracts_Array
 #include <string_view>
 #include <string>
 #include "contracts.h"
-const int BLOCKSIZE {2};
+const int BLOCKSIZE {5};
 
 class Index {
 
@@ -167,6 +167,23 @@ class Block :   public Index,
                 get_contracts_array(i).print_contract();
                 std::cout << "---------------\n";
             }
+        }
+
+        //add together block for hash
+        std::string add_block(){
+            std::string str {};
+            str = str + std::to_string(get_index_value());
+            str = str + get_timestamp();
+            str = str + std::to_string(get_proof());
+            str = str + get_previous_proof();
+            for(int i = 0; i < BLOCKSIZE; ++i){
+                str = str + get_contracts_array(i).get_transaction_ID();
+                str = str + get_contracts_array(i).get_reciever_wallet();
+                str = str + get_contracts_array(i).get_sender_wallet();
+                str = str + std::to_string(get_contracts_array(i).get_data_value());
+                str = str + std::to_string(get_contracts_array(i).get_reward_value());
+            }
+            return str;
         }
 
 };
