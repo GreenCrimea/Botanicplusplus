@@ -3,6 +3,7 @@
 #include <string_view>
 #include "cryptography.h"
 #include <ctime>
+const long unsigned int CHAINSIZE {10000};
 
 class Blockchain {
 
@@ -15,21 +16,19 @@ class Blockchain {
         ~Blockchain()=default;
 
         //create genesis block
-        Block create_genesis_block(std::string reciever_wallet){
+        void create_genesis_block(std::string reciever_wallet){
             if(chain_index == 0){
             std::string previous_proof {"0"};
-            Block block = create_block(reciever_wallet, previous_proof);
-            return block;
+            create_block(reciever_wallet, previous_proof);
             }
         }
 
         //create next block
-        Block create_next_block(std::string reciever_wallet){
+        void create_next_block(std::string reciever_wallet){
         
             Hashing_func hasher;
             std::string previous_proof = hasher.hash_func(previous_block_string, previous_nonce);
-            Block block = create_block(reciever_wallet, previous_proof);
-            return block;
+            create_block(reciever_wallet, previous_proof);
         }
 
         //create mining reward contract
@@ -47,7 +46,7 @@ class Blockchain {
         }
 
         //create block
-        Block create_block(std::string reciever_wallet, std::string previous_proof){
+        void create_block(std::string reciever_wallet, std::string previous_proof){
             
             double index = chain_index;
 
@@ -67,20 +66,41 @@ class Blockchain {
             block.initialise_array(contract_index, mining_reward);
             ++contract_index;
 
+            add_to_chain(block);
+
             previous_nonce = proof;
 
             previous_block_string = block.add_block();
 
             ++chain_index;
+        }
 
-            return block;
+        //add to chain array
+        void add_to_chain(Block block){
+            the_chain[chain_index] = block;
+        }
+
+        //see chain
+        void see_chain(){
+            for(int i = 0; i < chain_index; ++i){
+                the_chain[i].print_block();
+                std::cout << "\n\n" << std::endl;
+            }
+        }
+
+        //see block
+        void see_block(long unsigned int index){
+            the_chain[index].print_block();
         }
 
     private:
 
-        double chain_index {0};
+        long unsigned int chain_index {0};
         double difficulty {3};
         double previous_nonce {};
         std::string previous_block_string {};
+        int mempool_size {0};
+
+        Block the_chain[CHAINSIZE];
 
 };
