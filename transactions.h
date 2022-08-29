@@ -154,7 +154,13 @@ class Transactions {
             }
             return false;
         }
-        
+
+
+        void add_new_wallet(std::string wallet, double data){
+            balance_array[total_wallets].set_wallet_ID(wallet);
+            balance_array[total_wallets].set_wallet_balance(data);
+            total_wallets += 1;
+        }        
 
 
     private:
