@@ -1,8 +1,80 @@
 #include <iostream>
 #include <string>
-#include "blockchain.h"
+#include "cryptography.h"
 #include <string_view>
 #include <cryptopp/rsa.h>
+const long unsigned int ARRAYSIZE {10000};
+
+class Wallet_ID {
+        public:
+        //constructor
+        Wallet_ID()=default;
+        Wallet_ID(std::string_view wallet){
+            this->wallet = wallet;
+        }
+
+        //destructor
+        ~Wallet_ID()=default;
+
+        //getter
+        std::string get_wallet_ID(){
+            return wallet;
+        }
+
+        //setter
+        void set_wallet_ID(std::string wallet){
+            this->wallet = wallet;
+        }
+
+    private:
+
+        //value
+        std::string wallet{"null"};
+};
+
+
+class Wallet_Balance {
+        public:
+        //constructor
+        Wallet_Balance()=default;
+        Wallet_Balance(double balance){
+            this->balance = balance;
+        }
+
+        //destructor
+        ~Wallet_Balance()=default;
+
+        //getter
+        double get_wallet_balance(){
+            return balance;
+        }
+
+        //setter
+        void set_wallet_balance(double balance){
+            this->balance = balance;
+        }
+
+    private:
+
+        //value
+        double balance{0};
+};
+
+
+class Balance_Tracker :     public Wallet_ID,
+                            public Wallet_Balance {
+    
+    public:
+        //constructor
+        Balance_Tracker()=default;
+        Balance_Tracker(std::string_view wallet_ID, double balance):
+                                Wallet_ID(wallet_ID),
+                                Wallet_Balance(balance){}
+
+        //destructor
+        ~Balance_Tracker()=default;
+};
+
 
 class Transactions {
 
@@ -52,7 +124,6 @@ class Transactions {
         }
 
 
-        }
         void change_balance(std::string wallet, double data){
             if(is_transaction_valid(wallet, data)){
                 long unsigned int index = find_wallet_index(wallet);
@@ -88,74 +159,10 @@ class Transactions {
 
     private:
 
-        Balance_Tracker balance_array[CHAINSIZE];
+        Balance_Tracker balance_array[ARRAYSIZE];
         long unsigned int total_wallets {0};
 
 };
 
 
-class Wallet_ID {
-        public:
-        //constructor
-        Wallet_ID()=default;
-        Wallet_ID(std::string_view wallet){
-            this->wallet = wallet;
-        }
-
-        //destructor
-        ~Wallet_ID()=default;
-
-        //getter
-        std::string get_wallet_ID(){
-            return wallet;
-        }
-
-    private:
-
-        //value
-        std::string wallet{"null"};
-};
-
-
-class Wallet_Balance {
-        public:
-        //constructor
-        Wallet_Balance()=default;
-        Wallet_Balance(double balance){
-            this->balance = balance;
-        }
-
-        //destructor
-        ~Wallet_Balance()=default;
-
-        //getter
-        double get_wallet_balance(){
-            return balance;
-        }
-
-        //setter
-        set_wallet_balance(double balance){
-            this->balance = balance;
-        }
-
-    private:
-
-        //value
-        double balance{0};
-};
-
-
-class Balance_Tracker :     public Wallet_ID,
-                            public Wallet_Balance {
-    
-    public:
-        //constructor
-        Balance_Tracker()=default;
-        Balance_Tracker(std::string_view wallet_ID, double balance):
-                                Wallet_ID(wallet_ID),
-                                Wallet_Balance(balance){}
-
-        //destructor
-        ~Balance_Tracker()=default;
-};
 

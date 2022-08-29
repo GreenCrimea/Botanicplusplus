@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <string_view>
-#include "cryptography.h"
+#include "transactions.h"
 #include <ctime>
 const long unsigned int CHAINSIZE {10000};
 
@@ -147,5 +147,7 @@ class Blockchain {
         int mempool_size {0};
 
         Block the_chain[CHAINSIZE];
+
+
 
 };
