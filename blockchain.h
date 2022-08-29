@@ -93,10 +93,55 @@ class Blockchain {
             the_chain[index].print_block();
         }
 
+        //is block valid
+        bool is_block_valid(long unsigned int index){
+            std::string block_str = the_chain[index-1].add_block();
+            Hashing_func hasher;
+
+            double previous_nonce = the_chain[index-1].get_proof();
+
+            std::string previous_block_proof = hasher.hash_func(block_str, previous_nonce);
+            std::string previous_proof_next = the_chain[index].get_previous_proof();
+            
+            if(previous_block_proof == previous_proof_next){
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        //is chain valid
+        bool is_chain_valid(){
+            int valid = 1;
+            while(valid == 1){
+                for(int i = 1; i < chain_index; ++i){
+                    std::string block_str = the_chain[i-1].add_block();
+                    Hashing_func hasher;
+
+                    double previous_nonce = the_chain[i-1].get_proof();
+
+                    std::string previous_block_proof = hasher.hash_func(block_str, previous_nonce);
+                    std::string previous_proof_next = the_chain[i].get_previous_proof();
+
+                    if(previous_block_proof == previous_proof_next){
+                        valid = 1;
+                    }else{
+                        valid = 0;
+                    }
+                }
+                valid = 2;
+            }
+            if(valid == 0){
+                return false;
+            }else if (valid == 1){
+                return true;
+            }
+        }
+
     private:
 
         long unsigned int chain_index {0};
-        double difficulty {3};
+        double difficulty {5};
         double previous_nonce {};
         std::string previous_block_string {};
         int mempool_size {0};

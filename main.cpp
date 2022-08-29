@@ -10,9 +10,17 @@ int main() {
     std::string wallet {"test wallet address"};
     Blockchain main_chain;
     main_chain.create_genesis_block(wallet);
-    main_chain.see_chain();
+    main_chain.create_next_block(wallet);
+    main_chain.create_next_block(wallet);
+    main_chain.create_next_block(wallet);
     main_chain.create_next_block(wallet);
     main_chain.see_chain();
+
+    if(main_chain.is_chain_valid()){
+        std::cout << "VALID" << std::endl;
+    }else{
+        std::cout << "NOT VALID" << std::endl;
+    }
 
 
     crow::SimpleApp app;
