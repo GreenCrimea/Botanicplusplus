@@ -7,7 +7,8 @@
 
 int main() {
 
-    generate_rsa_keypair();
+    std::string passphrase {"password"};
+    generate_keypair(passphrase);
 
     crow::SimpleApp app;
 
