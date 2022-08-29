@@ -56,6 +56,23 @@ void save_keys (auto rsaPrivate, std::string wallet){
 std::string sign_message(auto privateKey, std::string passphrase){
     using namespace CryptoPP;
 
+    AutoSeededRandomPool rng;
+
+    RSASSA_PKCS1v15_SHA_Signer signer(privateKey);
+
+    size_t length = signer.MaxSignatureLength();
+    SecByteBlock signature(length);
+
+    length = signer.SignMessage(rng, (const byte*) passphrase.c_str(), passphrase.length(), signature);
+
+    signature.resize(length);
+
+    std::string userAccess;
+
+    std::string token(reinterpret_cast<const char*>(signature.data()), signature.size());
+
+    token += userAccess;
+/*
     AutoSeededRandomPool prng;
 
     ECDSA<ECP, SHA256>::Signer signer(privateKey);
@@ -65,15 +82,15 @@ std::string sign_message(auto privateKey, std::string passphrase){
 
     siglen = signer.SignMessage( prng, (const byte*)&passphrase[0], passphrase.size(), (byte*)&signature[0] );
     signature.resize(siglen);
-
-    return signature;
+*/
+    return token;
 }
 
 
-bool verify_signature(std::string signature, std::string wallet){
+bool verify_wallet(std::string check_wallet, std::string wallet){
     bool result = false;
 
-    if (signature == wallet){
+    if (check_wallet == wallet){
         result = true;
     }else{
         result = false;
@@ -103,28 +120,7 @@ std::string generate_wallet (std::string signature){
 }
 
 
-std::string generate_keypair(std::string passphrase){
-    using namespace CryptoPP;
-    
-    AutoSeededRandomPool prng;
-
-    ECDSA<ECP, SHA256>::PrivateKey privateKey;
-    privateKey.Initialize( prng, ASN1::secp256r1() );
-
-    ECDSA<ECP, SHA256>::PublicKey publicKey;
-    privateKey.MakePublicKey(publicKey);
-    
-    std::string signature = sign_message(privateKey, passphrase);
-
-    std::string wallet = generate_wallet(signature);
-
-    save_keys(privateKey, wallet);
-
-    return wallet;
-}
-
-
-void verify_wallet_owner(std::string wallet, std::string passphrase){
+void verify_wallet_owner(std::string wallet, std::string passphrase, auto key){
     using namespace CryptoPP;
 
     std::string filename = "keys/" + wallet + ".key";
@@ -136,8 +132,34 @@ void verify_wallet_owner(std::string wallet, std::string passphrase){
 
     std::string check_wallet = generate_wallet(signature);
 
-    std::cout << "sig: " << check_wallet << std::endl;
-    std::cout << "wal: " << wallet << std::endl;
+    std::cout << "wal: " << check_wallet << std::endl;
+    std::cout << "og wal: " << wallet << std::endl;
 
-    bool result = verify_signature(check_wallet, wallet);
+    bool result = verify_wallet(check_wallet, wallet);
 }
+
+
+std::string generate_keypair(std::string passphrase){
+    using namespace CryptoPP;
+    
+    AutoSeededRandomPool rng;
+
+    InvertibleRSAFunction parameters;
+    parameters.GenerateRandomWithKeySize(rng, 3072);
+
+    RSA::PrivateKey privateKey(parameters);
+    RSA::PublicKey publicKey(parameters);
+    
+    std::string signature = sign_message(privateKey, passphrase);
+
+    std::string wallet = generate_wallet(signature);
+
+    save_keys(privateKey, wallet);
+
+    verify_wallet_owner(wallet, passphrase, privateKey);
+
+    return wallet;
+}
+
+
+
