@@ -5,7 +5,7 @@
 #include <ctime>
 const long unsigned int CHAINSIZE {10000};
 
-class Blockchain {
+class Blockchain : public Transactions{
 
     public:
 
