@@ -72,17 +72,7 @@ std::string sign_message(CryptoPP::RSA::PrivateKey privateKey, std::string passp
     std::string token(reinterpret_cast<const char*>(signature.data()), signature.size());
 
     token += userAccess;
-/*
-    AutoSeededRandomPool prng;
 
-    ECDSA<ECP, SHA256>::Signer signer(privateKey);
-
-    size_t siglen = signer.MaxSignatureLength();
-    std::string signature(siglen, 0x00);
-
-    siglen = signer.SignMessage( prng, (const byte*)&passphrase[0], passphrase.size(), (byte*)&signature[0] );
-    signature.resize(siglen);
-*/
     return token;
 }
 
@@ -157,6 +147,21 @@ std::string generate_keypair(std::string passphrase){
     save_keys(privateKey, wallet);
 
     return wallet;
+}
+
+std::string generate_transaction_ID(){
+    using namespace CryptoPP;
+
+    SecByteBlock rand_bytes(AES::BLOCKSIZE);
+    std::string rand_hex;
+
+    OS_GenerateRandomBlock(false, rand_bytes, rand_bytes.size());
+
+    HexEncoder hex (new StringSink(rand_hex));
+    hex.Put(rand_bytes, rand_bytes.size());
+    hex.MessageEnd();
+
+    return rand_hex.substr(0,24);
 }
 
 

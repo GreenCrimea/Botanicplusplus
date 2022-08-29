@@ -66,7 +66,7 @@ class Proof {
     public:
         //constructor
         Proof()=default;
-        Proof(std::string_view proof){
+        Proof(double proof){
             this->proof = proof;
         }
 
@@ -74,14 +74,14 @@ class Proof {
         ~Proof()=default;
 
         //getter
-        std::string get_proof(){
+        double get_proof(){
             return proof;
         }
 
     private:
 
         //value
-        std::string proof{"null"};
+        double proof{0};
 };
 
 
@@ -140,7 +140,7 @@ class Block :   public Index,
         Block()=default;
         Block(  double index,
                 std::string_view timestamp,
-                std::string_view proof,
+                double proof,
                 std::string_view previous_proof):
             Index(index),
             Timestamp(timestamp),

@@ -36,8 +36,7 @@ class Hashing_func {
             std::string output_str {};
             HexEncoder encoder(new StringSink(output_str));
 
-            std::string msg = raw_input;
-            msg.append(std::to_string(nonce));
+            std::string msg = raw_input + (std::to_string(nonce));
             std::string digest;
 
             SHA256 hash;
@@ -77,36 +76,39 @@ class Hashing_func {
 
 
         //mining_loop
-        std::string mine_hash(std::string raw_input){
+        double mine_hash(std::string raw_input){
             int i = 0;
             std::string msg = raw_input;
-            int nonce = 0;
-            std::string golden_hash {};
+            double nonce = 0;
+            double golden_nonce {0};
 
             std::cout << "mining\n";
 
             std::string zero_str = gen_zero_str();
 
+            std::cout << zero_str << "\n";
+
             while(i == 0){
                 std::string hashed = hash_func(msg, nonce);
+                std::cout << hashed << "\n";
                 i = check_hash(hashed, zero_str);
                 golden_hash = hashed;
                 ++nonce;
                 golden_nonce = nonce;
             }
-            return golden_hash;
+            return golden_nonce;
         }
 
 
         //getter
-        int get_golden_nonce(){
-            int num = golden_nonce;
-            return num;
+        std::string get_golden_hash(){
+            std::string hash = golden_hash;
+            return hash;
         }
 
     private:
 
         int difficulty = 0;
-        int golden_nonce = 0;
+        std::string golden_hash {};
 
 };

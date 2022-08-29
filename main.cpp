@@ -1,16 +1,17 @@
 #include <iostream>
 #include <string>
-#include "cryptography.h"
+#include "blockchain.h"
 #define CROW_MAIN
 #include "crow.h"
 
 
 int main() {
 
-    std::string passphrase {"password"};
-    std::string wallet = generate_keypair(passphrase);
+    std::string wallet {"test wallet address"};
+    Blockchain main_chain;
+    Block block = main_chain.create_genesis_block(wallet);
+    block.print_block();
 
-    verify_wallet_owner(wallet, passphrase);
 
     crow::SimpleApp app;
 
