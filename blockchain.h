@@ -141,6 +141,24 @@ class Blockchain: public Transactions{
             }
         }
 
+
+        //create transaction
+        void create_transaction(std::string sender_wallet, std::string passphrase, std::string reciever_wallet, double data, double reward){
+            std::cout << "test" << std::endl;
+            if(is_wallet_in_index(reciever_wallet)){
+                if(is_wallet_in_index(sender_wallet)){
+                    if(verify_wallet_owner(sender_wallet, passphrase)){
+                        if(is_transaction_valid(sender_wallet, data)){
+                            std::cout << "test2" << std::endl;
+                            Contracts contract = send_coins(sender_wallet, passphrase, reciever_wallet, data, reward);
+                            total_mempool[total_mempool_size] = contract;
+                        }
+                    }
+                }
+            }
+        }
+
+
     private:
 
         long unsigned int chain_index {0};

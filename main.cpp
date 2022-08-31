@@ -7,16 +7,26 @@
 
 int main() {
 
-    std::string wallet {"test wallet address"};
     Blockchain main_chain;
+
+    std::string passphrase {"password"};
+    std::string passphrase2 {"example"};
+    std::string wallet = generate_keypair(passphrase);
+    std::string wallet2 = generate_keypair(passphrase2);
+
     main_chain.create_genesis_block(wallet);
-    main_chain.create_next_block(wallet);
-    main_chain.create_next_block(wallet);
+
+    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 5);
+
+    double bal = main_chain.get_wallet_balance(wallet);
+    double bal2 = main_chain.get_wallet_balance(wallet2);
+
+    std::cout << "bal: " << bal << std::endl;
+    std::cout << "bal2: " << bal2 << std::endl;
+
     main_chain.create_next_block(wallet);
 
     main_chain.see_chain();
-    double balance = main_chain.get_wallet_balance(wallet);
-    std::cout << "bal: " << balance << std::endl;
 
     if(main_chain.is_chain_valid()){
         std::cout << "VALID" << std::endl;

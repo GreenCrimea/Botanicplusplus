@@ -104,6 +104,9 @@ class Transactions {
 
             Contracts contract(transaction_ID, reciever_wallet, sender_wallet, sender_signature, data, reward);
 
+            change_balance(sender_wallet, -(data + reward));
+            change_balance(reciever_wallet, data);
+
             return contract;
         }
 
