@@ -31,6 +31,9 @@ int main() {
     main_chain.create_transaction(wallet, passphrase, wallet2, 50, 15);
     main_chain.create_transaction(wallet, passphrase, wallet2, 50, 20);
     main_chain.create_transaction(wallet, passphrase, wallet2, 50, 25);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 30);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 35);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 40);
 
     main_chain.create_next_block(wallet);
     main_chain.create_next_block(wallet);
