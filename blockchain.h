@@ -182,11 +182,11 @@ class Blockchain: public Transactions{
             }
 
             if((mempool_remaining == 0) && (total_mempool_size > 0)){
-                for(int a = 0; a < (total_mempool_size + (MEMPOOL_SIZE - 1))){
+                for(int a = 0; a < (total_mempool_size + (MEMPOOL_SIZE - 1)); ++a){
                     for(int i = 0; i < total_mempool_size; ++i){
-                        double lowest_block_index = find_lowest_block_index();
+                        int lowest_block_index = find_lowest_block_index();
                         double lowest_block_value = block_mempool[lowest_block_index].get_reward_value();
-                        double lowest_mempool_index = find_lowest_mempool_index();
+                        int lowest_mempool_index = find_lowest_mempool_index();
                         double lowest_mempool_value = total_mempool[lowest_mempool_index].get_reward_value();
                         if(lowest_block_value < lowest_mempool_value){
                             Contracts block_contract = block_mempool[lowest_block_index];
@@ -200,14 +200,14 @@ class Blockchain: public Transactions{
         }
 
         
-        double find_lowest_block_index(){
+        int find_lowest_block_index(){
             double lowest_block_value = block_mempool[0].get_reward_value();
-            double lowest_block_index = 0
-            for(int i = 1; i < MEMPOOL_SIZE; ++i){
-                    double value = block_mempool[i].get_reward_value();
+            int lowest_block_index = 0;
+            for(int y = 1; y < MEMPOOL_SIZE; ++y){
+                    double value = block_mempool[y].get_reward_value();
                     if(value < lowest_block_value){
                         lowest_block_value = value;
-                        lowest_block_index = i;
+                        lowest_block_index = y;
                     }
                 }
             return lowest_block_index;
@@ -216,12 +216,12 @@ class Blockchain: public Transactions{
 
         double find_lowest_mempool_index(){
             double lowest_mempool_value = total_mempool[0].get_reward_value();
-            double lowest_mempool_index = 0
-            for(int i = 1; i < total_mempool_size; ++i){
-                double value = total_mempool[i].get_reward_value();
+            int lowest_mempool_index = 0;
+            for(int y = 1; y < total_mempool_size; ++y){
+                double value = total_mempool[y].get_reward_value();
                 if(value < lowest_mempool_value){
                     lowest_mempool_value = value;
-                    lowest_mempool_index = i;
+                    lowest_mempool_index = y;
                 }
             }
             return lowest_mempool_index;
