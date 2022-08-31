@@ -4,7 +4,7 @@
 #include "transactions.h"
 #include <ctime>
 const long unsigned int CHAINSIZE {10000};
-const long unsigned int MEMPOOL_SIZE {5};
+const long unsigned int MEMPOOL_SIZE {4};
 
 class Blockchain: public Transactions{
 
@@ -65,9 +65,16 @@ class Blockchain: public Transactions{
 
             Contracts mining_reward = create_mining_reward(reciever_wallet);
 
-            int contract_index {0};
-            block.initialise_array(contract_index, mining_reward);
-            ++contract_index;
+            block.initialise_array(0, mining_reward);
+
+            for(int i = 0; i < block_mempool_size; ++i){
+                Contracts empty_contract;
+                std::cout << "test: " << block_mempool[i].get_reward_value() << std::endl;
+                block.initialise_array((i + 1), block_mempool[i]);
+                block_mempool[i] = empty_contract;
+            }
+
+            block_mempool_size = 0;
 
             add_to_chain(block);
 
@@ -159,7 +166,7 @@ class Blockchain: public Transactions{
         }
 
         void calculate_mempool_state(){
-            int mempool_remaining = (MEMPOOL_SIZE - 1) - block_mempool_size;
+            int mempool_remaining = MEMPOOL_SIZE - block_mempool_size;
             Contracts empty_contract;
             if(mempool_remaining > 0){
                 if(mempool_remaining <= total_mempool_size){
@@ -182,7 +189,7 @@ class Blockchain: public Transactions{
             }
 
             if((mempool_remaining == 0) && (total_mempool_size > 0)){
-                for(int a = 0; a < (total_mempool_size + (MEMPOOL_SIZE - 1)); ++a){
+                for(int a = 0; a < (total_mempool_size + MEMPOOL_SIZE); ++a){
                     for(int i = 0; i < total_mempool_size; ++i){
                         int lowest_block_index = find_lowest_block_index();
                         double lowest_block_value = block_mempool[lowest_block_index].get_reward_value();
@@ -203,7 +210,7 @@ class Blockchain: public Transactions{
         int find_lowest_block_index(){
             double lowest_block_value = block_mempool[0].get_reward_value();
             int lowest_block_index = 0;
-            for(int y = 1; y < MEMPOOL_SIZE; ++y){
+            for(int y = 1; y < (MEMPOOL_SIZE - 1); ++y){
                     double value = block_mempool[y].get_reward_value();
                     if(value < lowest_block_value){
                         lowest_block_value = value;
