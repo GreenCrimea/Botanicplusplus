@@ -82,6 +82,8 @@ class Blockchain: public Transactions{
 
             previous_block_string = block.add_block();
 
+            calculate_mempool_state();
+
             ++chain_index;
         }
 
