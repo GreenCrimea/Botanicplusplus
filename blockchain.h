@@ -4,7 +4,7 @@
 #include "transactions.h"
 #include <ctime>
 const long unsigned int CHAINSIZE {10000};
-const long unsigned int MEMPOOL_SIZE {4};
+const long unsigned int MEMPOOL_SIZE {5};
 
 class Blockchain: public Transactions{
 
@@ -144,17 +144,65 @@ class Blockchain: public Transactions{
 
         //create transaction
         void create_transaction(std::string sender_wallet, std::string passphrase, std::string reciever_wallet, double data, double reward){
-            std::cout << "test" << std::endl;
             if(is_wallet_in_index(reciever_wallet)){
                 if(is_wallet_in_index(sender_wallet)){
                     if(verify_wallet_owner(sender_wallet, passphrase)){
                         if(is_transaction_valid(sender_wallet, data)){
-                            std::cout << "test2" << std::endl;
                             Contracts contract = send_coins(sender_wallet, passphrase, reciever_wallet, data, reward);
                             total_mempool[total_mempool_size] = contract;
+                            ++total_mempool_size;
+                            calculate_mempool_state();
                         }
                     }
                 }
+            }
+        }
+
+        void calculate_mempool_state(){
+            int mempool_remaining = (MEMPOOL_SIZE - 1) - block_mempool_size;
+            Contracts empty_contract;
+            if(mempool_remaining > 0){
+                if(mempool_remaining <= total_mempool_size){
+                    for(int i = 0; i < mempool_remaining; ++i){
+                        block_mempool[block_mempool_size + (i + 1)] = total_mempool[i];
+                        total_mempool[i] = total_mempool[total_mempool_size];
+                        total_mempool[total_mempool_size] = empty_contract;
+                        ++block_mempool_size;
+                        --total_mempool_size;
+                    }
+                }else if (total_mempool_size < mempool_remaining){
+                    for(int i = 0; i < total_mempool_size; ++i){
+                        block_mempool[block_mempool_size + (i + 1)] = total_mempool[i];
+                        total_mempool[i] = total_mempool[total_mempool_size];
+                        total_mempool[total_mempool_size] = empty_contract;
+                        ++block_mempool_size;
+                        --total_mempool_size;
+                    }
+                }
+            }
+
+            if(mempool_remaining == 0){
+                double lowest_block_value = block_mempool[0].get_reward_value();
+                double lowest_block_index = 0
+                for(int i = 1; i < MEMPOOL_SIZE; ++i){
+                    double value = block_mempool[i].get_reward_value();
+                    if(value < lowest_block_value){
+                        lowest_block_value = value;
+                        lowest_block_index = i;
+                    }
+                }
+                
+            }
+        }
+
+
+        bool compare_contracts(Contracts contract1, Contracts contract2){
+            double reward_1 = contract1.get_reward_value();
+            double reward_2 = contract2.get_reward_value();
+            if(reward1 > reward2){
+                return true;
+            }else{
+                return false;
             }
         }
 
@@ -169,7 +217,7 @@ class Blockchain: public Transactions{
         Block the_chain[CHAINSIZE];
 
         Contracts block_mempool[MEMPOOL_SIZE];
-        int block_mempool_index {0};
+        int block_mempool_size {0};
 
         Contracts total_mempool[1000];
         int total_mempool_size {0};

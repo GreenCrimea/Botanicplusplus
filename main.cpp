@@ -14,6 +14,9 @@ int main() {
     std::string wallet = generate_keypair(passphrase);
     std::string wallet2 = generate_keypair(passphrase2);
 
+    main_chain.add_new_wallet(wallet, 0);
+    main_chain.add_new_wallet(wallet2, 0);
+
     main_chain.create_genesis_block(wallet);
 
     main_chain.create_transaction(wallet, passphrase, wallet2, 50, 5);

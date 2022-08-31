@@ -86,12 +86,6 @@ bool verify_wallet(std::string check_wallet, std::string wallet){
         result = false;
     }
 
-    if( !result ) {
-        std::cout << "Failed to verify signature on message" << std::endl;
-    } else {
-        std::cout << "All good!" << std::endl;
-    }  
-
     return result;
 }
 
