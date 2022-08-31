@@ -4,8 +4,9 @@
 #include "transactions.h"
 #include <ctime>
 const long unsigned int CHAINSIZE {10000};
+const long unsigned int MEMPOOL_SIZE {4};
 
-class Blockchain{
+class Blockchain: public Transactions{
 
     public:
 
@@ -39,6 +40,8 @@ class Blockchain{
             std::string sender_signature {"000000000000000000000000"};
             double data {1000};
             double reward {0};
+
+            change_balance(reciever_wallet, 1000);
 
             Contracts contract(transaction_ID, reciever_wallet, sender_wallet, sender_signature, data, reward);
 
@@ -144,9 +147,14 @@ class Blockchain{
         double difficulty {5};
         double previous_nonce {};
         std::string previous_block_string {};
-        int mempool_size {0};
 
         Block the_chain[CHAINSIZE];
+
+        Contracts block_mempool[MEMPOOL_SIZE];
+        int block_mempool_index {0};
+
+        Contracts total_mempool[1000];
+        int total_mempool_size {0};
 
 
 

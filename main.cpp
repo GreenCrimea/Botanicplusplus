@@ -13,8 +13,10 @@ int main() {
     main_chain.create_next_block(wallet);
     main_chain.create_next_block(wallet);
     main_chain.create_next_block(wallet);
-    main_chain.create_next_block(wallet);
+
     main_chain.see_chain();
+    double balance = main_chain.get_wallet_balance(wallet);
+    std::cout << "bal: " << balance << std::endl;
 
     if(main_chain.is_chain_valid()){
         std::cout << "VALID" << std::endl;

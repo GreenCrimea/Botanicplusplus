@@ -3,7 +3,7 @@
 #include "cryptography.h"
 #include <string_view>
 #include <cryptopp/rsa.h>
-const long unsigned int ARRAYSIZE {10000};
+const long unsigned int ARRAYSIZE {1000};
 
 class Wallet_ID {
         public:
@@ -125,6 +125,9 @@ class Transactions {
 
 
         void change_balance(std::string wallet, double data){
+            if(is_wallet_in_index(wallet) != true){
+                add_new_wallet(wallet, 0);
+            }
             if(is_transaction_valid(wallet, data)){
                 long unsigned int index = find_wallet_index(wallet);
                 double balance = get_balance(index);
@@ -160,6 +163,13 @@ class Transactions {
             balance_array[total_wallets].set_wallet_ID(wallet);
             balance_array[total_wallets].set_wallet_balance(data);
             total_wallets += 1;
+        }
+
+        double get_wallet_balance(std::string wallet){
+            long unsigned int index = find_wallet_index(wallet);
+            double balance = get_balance(index);
+            
+            return balance;
         }        
 
 
