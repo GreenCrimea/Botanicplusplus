@@ -105,7 +105,7 @@ class Hashing_func {
 
     private:
 
-        int difficulty = 0;
+        int difficulty = 5;
         std::string golden_hash {};
 
 };
