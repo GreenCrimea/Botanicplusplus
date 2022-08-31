@@ -10,7 +10,10 @@ class Blockchain : public Transactions{
     public:
 
         //constructors
-        Blockchain()=default;
+        Blockchain(){
+            Transactions transactions;
+            Hashing_func hasher(difficulty);
+        };
 
         //destructor
         ~Blockchain()=default;
@@ -26,7 +29,6 @@ class Blockchain : public Transactions{
         //create next block
         void create_next_block(std::string reciever_wallet){
         
-            Hashing_func hasher;
             std::string previous_proof = hasher.hash_func(previous_block_string, previous_nonce);
             create_block(reciever_wallet, previous_proof);
         }
@@ -50,7 +52,6 @@ class Blockchain : public Transactions{
             
             double index = chain_index;
 
-            Hashing_func hasher(difficulty);
             double proof = hasher.mine_hash(previous_proof);
 
             time_t now = time(0);
@@ -96,7 +97,6 @@ class Blockchain : public Transactions{
         //is block valid
         bool is_block_valid(long unsigned int index){
             std::string block_str = the_chain[index-1].add_block();
-            Hashing_func hasher;
 
             double previous_nonce = the_chain[index-1].get_proof();
 
@@ -116,7 +116,6 @@ class Blockchain : public Transactions{
             while(valid == 1){
                 for(int i = 1; i < chain_index; ++i){
                     std::string block_str = the_chain[i-1].add_block();
-                    Hashing_func hasher;
 
                     double previous_nonce = the_chain[i-1].get_proof();
 
@@ -145,6 +144,8 @@ class Blockchain : public Transactions{
         double previous_nonce {};
         std::string previous_block_string {};
         int mempool_size {0};
+        Hashing_func hasher;
+        Transactions transactions;
 
         Block the_chain[CHAINSIZE];
 
