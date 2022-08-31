@@ -33,15 +33,14 @@ class Blockchain: public Transactions{
         }
 
         //create mining reward contract
-        Contracts create_mining_reward(std::string reciever_wallet){
+        Contracts create_mining_reward(std::string reciever_wallet, double reward){
             
             std::string transaction_ID = generate_transaction_ID();
             std::string sender_wallet {"MINING PROTOCOL"};
             std::string sender_signature {"000000000000000000000000"};
             double data {1000};
-            double reward {0};
 
-            change_balance(reciever_wallet, 1000);
+            change_balance(reciever_wallet, 1000 + reward);
 
             Contracts contract(transaction_ID, reciever_wallet, sender_wallet, sender_signature, data, reward);
 
@@ -63,16 +62,17 @@ class Blockchain: public Transactions{
 
             Block block(index, timestamp, proof, previous_proof);
 
-            Contracts mining_reward = create_mining_reward(reciever_wallet);
-
-            block.initialise_array(0, mining_reward);
-
             for(int i = 0; i < block_mempool_size; ++i){
                 Contracts empty_contract;
-                std::cout << "test: " << block_mempool[i].get_reward_value() << std::endl;
                 block.initialise_array((i + 1), block_mempool[i]);
                 block_mempool[i] = empty_contract;
             }
+
+            double reward = calculate_reward_for_miner();
+
+            Contracts mining_reward = create_mining_reward(reciever_wallet, reward);
+
+            block.initialise_array(0, mining_reward);
 
             block_mempool_size = 0;
 
@@ -84,6 +84,17 @@ class Blockchain: public Transactions{
 
             ++chain_index;
         }
+
+
+        double calculate_reward_for_miner(){
+            double value {0};
+            for(int i = 0; i < block_mempool_size; ++i){
+                double num = block_mempool[i].get_reward_value();
+                value = value + num;
+            }
+            return value;
+        }
+
 
         //add to chain array
         void add_to_chain(Block block){
@@ -139,7 +150,6 @@ class Blockchain: public Transactions{
                         valid = 0;
                     }
                 }
-                valid = 2;
             }
             if(valid == 0){
                 return false;
@@ -165,21 +175,22 @@ class Blockchain: public Transactions{
             }
         }
 
+
         void calculate_mempool_state(){
             int mempool_remaining = MEMPOOL_SIZE - block_mempool_size;
             Contracts empty_contract;
             if(mempool_remaining > 0){
-                if(mempool_remaining <= total_mempool_size){
-                    for(int i = 0; i < mempool_remaining; ++i){
-                        block_mempool[block_mempool_size + (i + 1)] = total_mempool[i];
+                if(mempool_remaining >= total_mempool_size){
+                    for(int i = 0; i < total_mempool_size; ++i){
+                        block_mempool[block_mempool_size + i] = total_mempool[i];
                         total_mempool[i] = total_mempool[total_mempool_size];
                         total_mempool[total_mempool_size] = empty_contract;
                         ++block_mempool_size;
                         --total_mempool_size;
                     }
-                }else if (total_mempool_size < mempool_remaining){
-                    for(int i = 0; i < total_mempool_size; ++i){
-                        block_mempool[block_mempool_size + (i + 1)] = total_mempool[i];
+                }else if (total_mempool_size > mempool_remaining){
+                    for(int i = 0; i < mempool_remaining; ++i){
+                        block_mempool[block_mempool_size + i] = total_mempool[i];
                         total_mempool[i] = total_mempool[total_mempool_size];
                         total_mempool[total_mempool_size] = empty_contract;
                         ++block_mempool_size;

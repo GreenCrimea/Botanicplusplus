@@ -24,10 +24,19 @@ int main() {
     double bal = main_chain.get_wallet_balance(wallet);
     double bal2 = main_chain.get_wallet_balance(wallet2);
 
-    std::cout << "bal: " << bal << std::endl;
-    std::cout << "bal2: " << bal2 << std::endl;
+    main_chain.create_next_block(wallet);
+
+    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 5);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 10);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 15);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 20);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 25);
 
     main_chain.create_next_block(wallet);
+    main_chain.create_next_block(wallet);
+
+    std::cout << "bal: " << bal << std::endl;
+    std::cout << "bal2: " << bal2 << std::endl;
 
     main_chain.see_chain();
 
