@@ -62,13 +62,14 @@ class Blockchain: public Transactions{
 
             Block block(index, timestamp, proof, previous_proof);
 
+            double reward = calculate_reward_for_miner();
+
             for(int i = 0; i < block_mempool_size; ++i){
                 Contracts empty_contract;
                 block.initialise_array((i + 1), block_mempool[i]);
                 block_mempool[i] = empty_contract;
             }
 
-            double reward = calculate_reward_for_miner();
 
             Contracts mining_reward = create_mining_reward(reciever_wallet, reward);
 
@@ -85,8 +86,6 @@ class Blockchain: public Transactions{
             reset_mempool_state();
 
             calculate_mempool_state();
-
-            test_print_mempools();
 
             ++chain_index;
         }
@@ -175,7 +174,6 @@ class Blockchain: public Transactions{
                             total_mempool[total_mempool_size] = contract;
                             ++total_mempool_size;
                             calculate_mempool_state();
-                            test_print_mempools();
                         }
                     }
                 }
@@ -238,7 +236,6 @@ class Blockchain: public Transactions{
         void reset_mempool_state(){
             Contracts empty_contract;
             if(total_mempool_size <= MEMPOOL_SIZE){   
-                std::cout << "test" << std::endl; 
                 for(int i = 0; i < total_mempool_size; ++i){
                     block_mempool[i] = total_mempool[i];
                     total_mempool[i] = empty_contract;
@@ -247,13 +244,11 @@ class Blockchain: public Transactions{
                 }
                 total_mempool_size = 0;
             }else if(total_mempool_size > MEMPOOL_SIZE){
-                std::cout << "test2" << std::endl; 
                 for(int i = 0; i < MEMPOOL_SIZE; ++i){
                     block_mempool[i] = total_mempool[i];
                     total_mempool[i] = total_mempool[i + MEMPOOL_SIZE];
                     total_mempool[i + MEMPOOL_SIZE] = empty_contract;
                     ++block_mempool_size;
-                    test_print_mempools();
                 }
                 total_mempool_size = total_mempool_size - MEMPOOL_SIZE;
             }
