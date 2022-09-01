@@ -3,12 +3,17 @@
 #include "blockchain.h"
 #define CROW_MAIN
 #include "crow.h"
+#include "web_func.h"
+#include <map>
+#include <fstream>
+#include <regex>
+
 
 
 int main() {
 
     Blockchain main_chain;
-
+    /*
     std::string passphrase {"password"};
     std::string passphrase2 {"example"};
     std::string passphrase3 {"test"};
@@ -58,7 +63,7 @@ int main() {
     }else{
         std::cout << "NOT VALID" << std::endl;
     }
-
+    */
 
     crow::SimpleApp app;
 
@@ -101,6 +106,13 @@ int main() {
     CROW_ROUTE(app, "/generate_wallet.html")([](){
         auto page = crow::mustache::load_text("generate_wallet.html");
         return page;
+    });
+
+
+    CROW_ROUTE(app, "/generate_wallet.html").methods("POST"_method)([&](const crow::request& req){
+        std::map<std::string, std::string> post_body = parse_crow_post_data(req.body);
+
+        return post_body;
     });
 
 
