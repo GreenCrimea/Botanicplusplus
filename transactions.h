@@ -129,11 +129,9 @@ class Transactions {
 
         void change_balance(std::string wallet, double data){
             if(is_wallet_in_index(wallet) != true){
-                std::cout << "test" << std::endl;
                 add_new_wallet(wallet, 0);
             }
             if(is_transaction_valid(wallet, data)){
-                std::cout << "test2" << std::endl;
                 long unsigned int index = find_wallet_index(wallet);
                 double balance = get_balance(index);
                 double new_balance = balance + data;

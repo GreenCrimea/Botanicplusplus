@@ -11,11 +11,14 @@ int main() {
 
     std::string passphrase {"password"};
     std::string passphrase2 {"example"};
+    std::string passphrase3 {"test"};
     std::string wallet = generate_keypair(passphrase);
     std::string wallet2 = generate_keypair(passphrase2);
+    std::string wallet3 = generate_keypair(passphrase3);
 
     main_chain.add_new_wallet(wallet, 0);
     main_chain.add_new_wallet(wallet2, 0);
+    main_chain.add_new_wallet(wallet3, 0);
 
     main_chain.create_genesis_block(wallet);
 
@@ -23,28 +26,30 @@ int main() {
 
     main_chain.create_next_block(wallet);
 
-    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 75);
-    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 35);
-    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 12);
-    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 1);
-    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 99);
-    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 4);
-    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 3);
-    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 678);
-    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 9);
-    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 43);
-    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 32);
-    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 67);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 5, 75);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 5, 35);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 5, 12);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 5, 1);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 5, 99);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 5, 4);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 5, 3);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 5, 67);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 5, 9);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 5, 43);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 5, 32);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 5, 67);
 
-    main_chain.create_next_block(wallet);
-    main_chain.create_next_block(wallet);
-    main_chain.create_next_block(wallet);
+    main_chain.create_next_block(wallet3);
+    main_chain.create_next_block(wallet3);
+    main_chain.create_next_block(wallet3);
 
     double bal = main_chain.get_wallet_balance(wallet);
     double bal2 = main_chain.get_wallet_balance(wallet2);
+    double bal3 = main_chain.get_wallet_balance(wallet3);
 
     std::cout << "bal: " << bal << std::endl;
     std::cout << "bal2: " << bal2 << std::endl;
+    std::cout << "bal3: " << bal3 << std::endl;
 
     main_chain.see_chain();
 
