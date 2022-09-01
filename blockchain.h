@@ -84,6 +84,8 @@ class Blockchain: public Transactions{
 
             reset_mempool_state();
 
+            calculate_mempool_state();
+
             test_print_mempools();
 
             ++chain_index;
@@ -185,15 +187,20 @@ class Blockchain: public Transactions{
             int mempool_remaining = MEMPOOL_SIZE - block_mempool_size;
             Contracts empty_contract;
             if(mempool_remaining > 0){
+
                 if(mempool_remaining >= total_mempool_size){
+
                     for(int i = 0; i < total_mempool_size; ++i){
+
                         block_mempool[block_mempool_size + i] = total_mempool[i];
                         total_mempool[i] = total_mempool[total_mempool_size];
                         total_mempool[total_mempool_size] = empty_contract;
                         ++block_mempool_size;
                         --total_mempool_size;
                     }
+
                 }else if (total_mempool_size > mempool_remaining){
+
                     for(int i = 0; i < mempool_remaining; ++i){
                         block_mempool[block_mempool_size + i] = total_mempool[i];
                         total_mempool[i] = total_mempool[total_mempool_size];
@@ -204,18 +211,23 @@ class Blockchain: public Transactions{
                 }
             }
 
+
             if((mempool_remaining == 0) && (total_mempool_size > 0)){
+
                 for(int a = 0; a < (total_mempool_size + MEMPOOL_SIZE); ++a){
+
                     for(int i = 0; i < total_mempool_size; ++i){
+
                         int lowest_block_index = find_lowest_block_index();
                         double lowest_block_value = block_mempool[lowest_block_index].get_reward_value();
-                        int lowest_mempool_index = find_lowest_mempool_index();
-                        double lowest_mempool_value = total_mempool[lowest_mempool_index].get_reward_value();
-                        if(lowest_block_value < lowest_mempool_value){
+                        int highest_mempool_index = find_highest_mempool_index();
+                        double highest_mempool_value = total_mempool[highest_mempool_index].get_reward_value();
+
+                        if(lowest_block_value < highest_mempool_value){
                             Contracts block_contract = block_mempool[lowest_block_index];
-                            Contracts total_contract = total_mempool[lowest_mempool_index];
+                            Contracts total_contract = total_mempool[highest_mempool_index];
                             block_mempool[lowest_block_index] = total_contract;
-                            total_mempool[lowest_mempool_index] = block_contract;
+                            total_mempool[highest_mempool_index] = block_contract;
                         }
                     }
                 }
@@ -231,8 +243,9 @@ class Blockchain: public Transactions{
                     block_mempool[i] = total_mempool[i];
                     total_mempool[i] = empty_contract;
                     ++block_mempool_size;
-                    --total_mempool_size;
+                    
                 }
+                total_mempool_size = 0;
             }else if(total_mempool_size > MEMPOOL_SIZE){
                 std::cout << "test2" << std::endl; 
                 for(int i = 0; i < MEMPOOL_SIZE; ++i){
@@ -240,8 +253,9 @@ class Blockchain: public Transactions{
                     total_mempool[i] = total_mempool[total_mempool_size - MEMPOOL_SIZE];
                     total_mempool[total_mempool_size - MEMPOOL_SIZE] = empty_contract;
                     ++block_mempool_size;
-                    --total_mempool_size;
+                    test_print_mempools();
                 }
+                total_mempool_size = total_mempool_size - MEMPOOL_SIZE;
             }
         }
 
@@ -249,7 +263,7 @@ class Blockchain: public Transactions{
         int find_lowest_block_index(){
             double lowest_block_value = block_mempool[0].get_reward_value();
             int lowest_block_index = 0;
-            for(int y = 1; y < (MEMPOOL_SIZE - 1); ++y){
+            for(int y = 1; y < MEMPOOL_SIZE ; ++y){
                     double value = block_mempool[y].get_reward_value();
                     if(value < lowest_block_value){
                         lowest_block_value = value;
@@ -260,17 +274,17 @@ class Blockchain: public Transactions{
         }
 
 
-        double find_lowest_mempool_index(){
-            double lowest_mempool_value = total_mempool[0].get_reward_value();
-            int lowest_mempool_index = 0;
+        double find_highest_mempool_index(){
+            double highest_mempool_value = total_mempool[0].get_reward_value();
+            int highest_mempool_index = 0;
             for(int y = 1; y < total_mempool_size; ++y){
                 double value = total_mempool[y].get_reward_value();
-                if(value < lowest_mempool_value){
-                    lowest_mempool_value = value;
-                    lowest_mempool_index = y;
+                if(value > highest_mempool_value){
+                    highest_mempool_value = value;
+                    highest_mempool_index = y;
                 }
             }
-            return lowest_mempool_index;
+            return highest_mempool_index;
         }
 
 
@@ -286,7 +300,12 @@ class Blockchain: public Transactions{
             std::cout << "1; " << total_mempool[1].get_reward_value() << std::endl;
             std::cout << "2; " << total_mempool[2].get_reward_value() << std::endl;
             std::cout << "3; " << total_mempool[3].get_reward_value() << std::endl;
-            std::cout << "4; " << total_mempool[4].get_reward_value() << "\n\n" << std::endl;
+            std::cout << "4; " << total_mempool[4].get_reward_value() << std::endl;
+            std::cout << "5; " << total_mempool[5].get_reward_value() << std::endl;
+            std::cout << "6; " << total_mempool[6].get_reward_value() << std::endl;
+            std::cout << "7; " << total_mempool[7].get_reward_value() << std::endl;
+ 
+
         }
 
 
