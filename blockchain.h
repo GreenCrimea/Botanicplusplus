@@ -250,8 +250,8 @@ class Blockchain: public Transactions{
                 std::cout << "test2" << std::endl; 
                 for(int i = 0; i < MEMPOOL_SIZE; ++i){
                     block_mempool[i] = total_mempool[i];
-                    total_mempool[i] = total_mempool[total_mempool_size - MEMPOOL_SIZE];
-                    total_mempool[total_mempool_size - MEMPOOL_SIZE] = empty_contract;
+                    total_mempool[i] = total_mempool[i + MEMPOOL_SIZE];
+                    total_mempool[i + MEMPOOL_SIZE] = empty_contract;
                     ++block_mempool_size;
                     test_print_mempools();
                 }
