@@ -26,15 +26,20 @@ int main() {
 
     main_chain.create_next_block(wallet);
 
-    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 5);
-    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 10);
-    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 15);
-    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 20);
-    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 25);
-    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 30);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 75);
     main_chain.create_transaction(wallet, passphrase, wallet2, 50, 35);
-    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 40);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 12);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 1);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 99);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 4);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 3);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 678);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 9);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 43);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 32);
+    main_chain.create_transaction(wallet, passphrase, wallet2, 50, 67);
 
+    main_chain.create_next_block(wallet);
     main_chain.create_next_block(wallet);
     main_chain.create_next_block(wallet);
 
