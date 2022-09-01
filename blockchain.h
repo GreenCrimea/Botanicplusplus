@@ -82,7 +82,9 @@ class Blockchain: public Transactions{
 
             previous_block_string = block.add_block();
 
-            calculate_mempool_state();
+            reset_mempool_state();
+
+            test_print_mempools();
 
             ++chain_index;
         }
@@ -171,6 +173,7 @@ class Blockchain: public Transactions{
                             total_mempool[total_mempool_size] = contract;
                             ++total_mempool_size;
                             calculate_mempool_state();
+                            test_print_mempools();
                         }
                     }
                 }
@@ -219,6 +222,29 @@ class Blockchain: public Transactions{
             }
         }
 
+
+        void reset_mempool_state(){
+            Contracts empty_contract;
+            if(total_mempool_size <= MEMPOOL_SIZE){   
+                std::cout << "test" << std::endl; 
+                for(int i = 0; i < total_mempool_size; ++i){
+                    block_mempool[i] = total_mempool[i];
+                    total_mempool[i] = empty_contract;
+                    ++block_mempool_size;
+                    --total_mempool_size;
+                }
+            }else if(total_mempool_size > MEMPOOL_SIZE){
+                std::cout << "test2" << std::endl; 
+                for(int i = 0; i < MEMPOOL_SIZE; ++i){
+                    block_mempool[i] = total_mempool[i];
+                    total_mempool[i] = total_mempool[total_mempool_size - MEMPOOL_SIZE];
+                    total_mempool[total_mempool_size - MEMPOOL_SIZE] = empty_contract;
+                    ++block_mempool_size;
+                    --total_mempool_size;
+                }
+            }
+        }
+
         
         int find_lowest_block_index(){
             double lowest_block_value = block_mempool[0].get_reward_value();
@@ -245,6 +271,22 @@ class Blockchain: public Transactions{
                 }
             }
             return lowest_mempool_index;
+        }
+
+
+        void test_print_mempools(){
+            std::cout << "BLOCK MEMPOOL size:" << block_mempool_size << std::endl;
+            std::cout << "0; " << block_mempool[0].get_reward_value() << std::endl;
+            std::cout << "1; " << block_mempool[1].get_reward_value() << std::endl;
+            std::cout << "2; " << block_mempool[2].get_reward_value() << std::endl;
+            std::cout << "3; " << block_mempool[3].get_reward_value() << std::endl;
+            std::cout << "4; " << block_mempool[4].get_reward_value() << std::endl;
+            std::cout << "TOTAL MEMPOOL size:" << total_mempool_size << std::endl;
+            std::cout << "0; " << total_mempool[0].get_reward_value() << std::endl;
+            std::cout << "1; " << total_mempool[1].get_reward_value() << std::endl;
+            std::cout << "2; " << total_mempool[2].get_reward_value() << std::endl;
+            std::cout << "3; " << total_mempool[3].get_reward_value() << std::endl;
+            std::cout << "4; " << total_mempool[4].get_reward_value() << "\n\n" << std::endl;
         }
 
 
